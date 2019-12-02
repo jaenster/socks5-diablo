@@ -14,20 +14,28 @@ const ProxyClient = require('./ProxyClient');
 const BufferHelper = require('./BufferHelper');
 const net = require('net');
 
-class client {
+class Client {
 	constructor(socket) {
 		this.socket = socket;
 		socket.once('data', data => this.handshakeInit(data));
+		Client.instances.push(this);
 	}
 
 	connect(ipAddr, port, connectBuffer) {
 		//ToDo; deal with failure's
+		console.log(ipAddr + ':' + port);
 		const remote = net.connect(port, ipAddr, () => {
-			// Assuming always for now it is an success
 			connectBuffer.writeUInt8(0x00, 1); // Success code
 			this.socket.write(connectBuffer);
 
-			new ProxyClient(this.socket, remote)
+			new ProxyClient(this.socket, remote);
+
+			// Remove this client from our instance list
+			Client.instances.splice(Client.instances.indexOf(this), 1);
+		}).on('error', err => {
+			connectBuffer.writeUInt8(!!err, 1); // Success code
+			this.socket.write(connectBuffer);
+			this.socket.destroy();
 		});
 	}
 
@@ -133,4 +141,4 @@ class client {
 }
 
 
-module.exports = client;
+module.exports = Client;
