@@ -23,7 +23,6 @@ class Client {
 	}
 
 	connect(ipAddr, port, connectBuffer) {
-		//ToDo; deal with failure's
 		console.log(ipAddr + ':' + port);
 		const remote = net.connect(port, ipAddr, () => {
 			connectBuffer.writeUInt8(0x00, 1); // Success code
@@ -37,6 +36,9 @@ class Client {
 			connectBuffer.writeUInt8(!!err, 1); // Success code
 			this.socket.write(connectBuffer);
 			this.socket.destroy();
+
+			// Remove this client from our instance list
+			Client.instances.splice(Client.instances.indexOf(this), 1);
 		});
 	}
 
@@ -54,7 +56,7 @@ class Client {
 		for (let i = 0; i < typesSupported; i++) auths.push(data.readUInt8(i + 2));
 
 		// Filter out those we dont support. Currently hardcoded
-		auths = auths.filter(type => type === enums.AUTH || type === enums.NO_AUTH);
+		auths = auths.filter(type => type === enums.AUTH || (type === enums.NO_AUTH && this.settings.options.allowNoAuth));
 
 		if (!auths.length) {
 			// Throw error, unsupported
@@ -94,9 +96,9 @@ class Client {
 				const uname = BufferHelper.getString(data, usernameLength, 2);
 				const pass = BufferHelper.getString(data, passwordLength, offset);
 
-				// ToDo; some check for username/password
-				// For now, we just accept
-				failed = 0x00; // we didnt
+				if (!this.settings.users.some(user => user.username === uname && user.password === pass)) {
+					failed = 0x01; // We failed to find any user with that username/password
+				}
 				break;
 			default:
 				throw new Error('unsupported auth method');
