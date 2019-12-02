@@ -15,8 +15,9 @@ const BufferHelper = require('./BufferHelper');
 const net = require('net');
 
 class Client {
-	constructor(socket) {
+	constructor(socket,settings = {users: [], options: {allowNoAuth: false, listen: 0x50C4}}) {
 		this.socket = socket;
+		this.settings = settings;
 		socket.once('data', data => this.handshakeInit(data));
 		Client.instances.push(this);
 	}
