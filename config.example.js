@@ -13,5 +13,6 @@ module.exports = {
 	options: {
 		allowNoAuth: false, // If true, allow no auth
 		listen: 0x50C4, // "sock" in hex, or whatever port you prefer
+		client: require('./ProxyClient'), // ProxyClient is the default
 	}
 };
