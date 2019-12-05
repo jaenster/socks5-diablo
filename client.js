@@ -9,13 +9,12 @@ const enums = {
 };
 
 const preferredAuthMethods = [enums.AUTH, enums.NO_AUTH];
-const ProxyClient = require('./ProxyClient');
 
 const BufferHelper = require('./BufferHelper');
 const net = require('net');
 
 class Client {
-	constructor(socket, settings = {users: [], options: {allowNoAuth: false, listen: 0x50C4}}) {
+	constructor(socket, settings = {users: [], options: {allowNoAuth: false, listen: 0x50C4, client: require('./ProxyClient')}}) {
 		this.socket = socket;
 		this.settings = settings;
 		socket.once('data', data => this.handshakeInit(data));
@@ -29,7 +28,7 @@ class Client {
 			this.socket.write(connectBuffer);
 			this.destroy(false); // Dont close socket ;)
 
-			new ProxyClient(this.socket, remote);
+			new this.settings.options.client(this.socket, remote);
 		}).on('error', err => {
 			connectBuffer.writeUInt8(!!err | 0, 1); // Success code
 			this.socket.write(connectBuffer);
