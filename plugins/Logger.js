@@ -6,7 +6,13 @@ for (let i = 32; i < 128; i++) readableChars.push(i);
 ['server', 'client'].forEach(type =>
 	DiabloClient.hooks[type].push(
 		/** @type Buffer */
-		async function (buffer) {
+		function ({raw: buffer,...rest}) {
+			// let first = buffer.readUInt8(0);
+			// if (first === 0x9c || first === 0x9D) {
+			// 	require('fs').writeFile(__dirname+'\\tmp_item.'+buffer.length+'.tst',buffer,function(...args) {
+			// 		console.log(...args);
+			// 	})
+			// }
 			let arr = [];
 			for (let i = 0; i < buffer.length; i++) arr.push(buffer.readUInt8(i));
 
@@ -23,11 +29,15 @@ for (let i = 32; i < 128; i++) readableChars.push(i);
 					+ (tmp.map(arr => arr.map(x => parseInt(x, 16)).map(x => readableChars.includes(x) && String.fromCharCode(x) || '.').join('')).join('    '))
 					+ '\r\n';
 				counter += stripped;
-
 			}
-
+			console.log(JSON.stringify(rest));
 			console.log(print);
 
+
+			const fs = require('fs');
+			const logfile = {server: this.scfile,client: this.csfile}[type];
+			//console.log('Writing to log file ->' + logfile);
+			//fs.writeFileSync(logfile,buffer,{flag: 'a'});
 		}
 	)
 );
