@@ -37,8 +37,8 @@ for (let i = 32; i < 128; i++) readableChars.push(i);
 			const fs = require('fs');
 			const logfile = {server: this.scfile,client: this.csfile}[type];
 
-			console.log('Writing to log file ->' + logfile);
-			fs.writeFileSync(logfile,buffer,{flag: 'a'});
+			//console.log('Writing to log file ->' + logfile);
+			//fs.writeFileSync(logfile,buffer,{flag: 'a'});
 		}
 	)
 );
