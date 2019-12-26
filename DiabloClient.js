@@ -37,7 +37,6 @@ const loadPlugin = what => {
 };
 
 addDirectory(__dirname + '\\plugins', 'plugins');
-const {serverSplice, clientSplice} = require('./lib/splicePacket');
 
 class Client {
 	/**
@@ -53,10 +52,10 @@ class Client {
 			server.pipe(client);
 			return null;
 		}
-		const dataHandler = (from, to, hooks, splicer) => buffer => {
+		const dataHandler = (from, to, hooks) => buffer => {
 			// Need to predict better what kind of server is what.
 			if (port === 4000) { // D2GS
-				if (!hooks.map(client => client.call(this, buffer) === Client.BLOCK).some(_ => _)) {
+				if (hooks.map(client => client.call(this, buffer) === Client.BLOCK).some(_ => _)) {
 					return false;
 				}
 			} else if (port === 6112) { // Realm
@@ -68,9 +67,9 @@ class Client {
 		this.hooks = {
 			client: [],
 			server: [],
-		}
-		client.on('data', dataHandler(client, server, this.hooks.client, clientSplice));
-		server.on('data', dataHandler(server, client, this.hooks.server, serverSplice));
+		};
+		client.on('data', dataHandler(client, server, this.hooks.client));
+		server.on('data', dataHandler(server, client, this.hooks.server));
 
 		this.ip = ip;
 		this.port = port;
