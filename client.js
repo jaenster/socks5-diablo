@@ -18,6 +18,7 @@ class Client {
 		this.socket = socket;
 		this.settings = settings;
 		socket.once('data', data => this.handshakeInit(data));
+		socket.on('error', e => e);
 		Client.instances.push(this);
 	}
 
@@ -28,7 +29,11 @@ class Client {
 			this.socket.write(connectBuffer);
 			this.destroy(false); // Dont close socket ;)
 
-			new this.settings.options.client(this.socket, remote);
+			if (this.settings.options.client) {
+				new this.settings.options.client(this.socket, remote, ipAddr, port);
+			} else {
+				new this.settings.options.client(this.socket, remote);
+			}
 		}).on('error', err => {
 			connectBuffer.writeUInt8(!!err | 0, 1); // Success code
 			this.socket.write(connectBuffer);
