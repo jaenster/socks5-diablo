@@ -5,5 +5,8 @@ Set it up so game.exe goes trough this socks5 server on localhost.
 
 # Install
 
-Install nodejs 13 or higher (nodejs.org)
-Open start.cmd
+Simply run `install.cmd`. This will install nodejs version 13, and the building tools and node modules you need
+
+# Run
+
+Start `run.cmd`

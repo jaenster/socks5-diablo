@@ -4,4 +4,7 @@ echo First run install ofcourse =)
 echo.
 
 
-node bin/server.js
+node index
+
+REM in case of an error, we want it to show
+pause

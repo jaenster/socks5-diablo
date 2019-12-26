@@ -874,13 +874,12 @@ class BaseUniqueItem {
 	 * @param {BaseItem} obj
 	 */
 	function readCSV(data, obj) {
-		data.toString('utf8').split('\r\n')
+		data.toString('utf8').replace('\r\n', '\n').split('\n')
 			.map(x => '[' + x + ']')
 			.map(x => {
 				try {
 					return JSON.parse(x);
 				} catch (e) {
-					//console.log('Failed to parse ->' + x);
 					return undefined;
 				}
 			})

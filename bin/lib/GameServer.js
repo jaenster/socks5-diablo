@@ -92,7 +92,7 @@ class GameServer extends require('events') {
 		const inHex = packetId.toString(16);
 		switch (packetId) {
 			case 0x26: // Chat msg
-				return getChatPacketSize(data, size);
+				return this.getChatPacketSize(data, size);
 
 			case 0x5b: // Player in game
 				return bytes.readUInt16LE(offset + 1);
@@ -149,6 +149,18 @@ class GameServer extends require('events') {
 		}
 		return -1;
 	};
+
+	/**
+	 *
+	 * @param {buffer} data
+	 * @param {size} size
+	 */
+	static getChatPacketSize(data, size) {
+		if (size >= 12) {
+
+		}
+
+	}
 
 	static hooks = [];
 	static packetMap = {}; // Filled in below
