@@ -2,7 +2,7 @@
  * @description Simply hook 2 clients against eachother
  *
  */
-
+const Game = require('./lib/Game');
 const fs = require('fs');
 
 /** @param {string} dirPath
@@ -37,7 +37,6 @@ const loadPlugin = what => {
 };
 
 addDirectory(__dirname + '\\plugins', 'plugins');
-const {serverSplice, clientSplice} = require('./lib/splicePacket');
 
 class Client {
 	/**
@@ -47,38 +46,44 @@ class Client {
 	 * @param port
 	 */
 	constructor(client, server, ip, port) {
-		const dataHandler = (from, to, hooks, splicer) => buffer => {
-		    // Need to predict better what kind of server is what.
+		[client, server].forEach(_ => _.on.call(_, 'error', _ => this.destory()));
+		if (port !== 4000/*gameserver*/) { // Just combine the 2 and be done with it
+			client.pipe(server);
+			server.pipe(client);
+			return null;
+		}
+		const dataHandler = (from, to, hooks) => buffer => {
+			// Need to predict better what kind of server is what.
 			if (port === 4000) { // D2GS
-				const spliced = splicer(buffer);
-				spliced && spliced.forEach(packet => {
-					if (!hooks.map(client => client.call(this, packet) === Client.BLOCK).some(_ => _)) {
-						// block this packet (do something)
-					}
-				});
+				if (hooks.map(client => client.call(this, buffer) === Client.BLOCK).some(_ => _)) {
+					return false;
+				}
 			} else if (port === 6112) { // Realm
-			    // ToDo; something?
-            }
+				// ToDo; something?
+			}
 			to.write(buffer);
 		};
 
-		client.on('data', dataHandler(client, server, Client.hooks.client, clientSplice));
-		server.on('data', dataHandler(server, client, Client.hooks.server, serverSplice));
+		this.hooks = {
+			client: [],
+			server: [],
+		};
+		client.on('data', dataHandler(client, server, this.hooks.client));
+		server.on('data', dataHandler(server, client, this.hooks.server));
 
 		this.ip = ip;
 		this.port = port;
 		this.scfile = __dirname + '\\log\\s-c-' + ip + '-' + port + '-' + Date.now() + '.log';
 		this.csfile = __dirname + '\\log\\c-s-' + ip + '-' + port + '-' + Date.now() + '.log';
+		this.client = client;
+		this.server = server;
 		this.initizialed = true;
 
 		Client.instances.push(this);
+		this.game = new Game(this);
 	}
 
 	static instances = [];
-	static hooks = {
-		client: [],
-		server: [],
-	};
 	static BLOCK = Symbol('block');
 }
 
