@@ -1,7 +1,7 @@
 const GameServer = require('./GameServer');
 const BaseLevel = require('./BaseLevel');
 const UnitCollector = require('./UnitCollector');
-const ItemCollector = require('./itemCollector');
+const ItemCollector = require('./ItemCollector');
 
 class Game {
 	constructor(diabloProxy) {
