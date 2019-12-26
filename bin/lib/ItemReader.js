@@ -160,16 +160,6 @@ function itemParser(buffer, game) {
 	br.pos = 8; // The first byte is the packet identifyer
 	Object.defineProperties(this, BitReader.shortHandBr(br));
 
-	function readUInt16LE(offset = 0) {
-		validateNumber(offset, 'offset');
-		const first = this[offset];
-		const last = this[offset + 1];
-		if (first === undefined || last === undefined)
-			boundsError(offset, this.length - 2);
-
-		return first + last * 2 ** 8;
-	}
-
 	item.action = this.byte;
 	item.packetLength = this.byte;
 	item.category = this.byte;
