@@ -1029,9 +1029,43 @@ class D2Objects {
 		this.DrawUnder = args[i++];
 		this.OpenWarp = args[i++];
 		this.AutoMap = args[i++];
-
+		D2Objects.instances.push(this);
 	}
 
+	static instances = []
+}
+
+class LvlPrest {
+	constructor(args) {
+		let i = 0;
+		this.Name = args[i++];
+		this.Def = args[i++];
+		this.LevelId = args[i++];
+		this.Populate = args[i++];
+		this.Logicals = args[i++];
+		this.Outdoors = args[i++];
+		this.Animate = args[i++];
+		this.KillEdge = args[i++];
+		this.FillBlanks = args[i++];
+		this.SizeX = args[i++];
+		this.SizeY = args[i++];
+		this.AutoMap = args[i++];
+		this.Scan = args[i++];
+		this.Pops = args[i++];
+		this.PopPad = args[i++];
+		this.Files = args[i++];
+		this.File1 = args[i++];
+		this.File2 = args[i++];
+		this.File3 = args[i++];
+		this.File4 = args[i++];
+		this.File5 = args[i++];
+		this.File6 = args[i++];
+		this.Dt1Mask = args[i++];
+		this.Beta = args[i++];
+		LvlPrest.instances.push(this);
+	}
+
+	static instances = []
 }
 
 { // Just a block =)
@@ -1060,8 +1094,8 @@ class D2Objects {
 		csvs.forEach(([file, model]) => readCSV(fs.readFileSync(file), models[model]));
 	}
 	{
-		const models = {D2Objects};
-		const semicolons = ['D2Objects'].map(x => [__dirname + '\\..\\data\\' + x + '.semicolon', x]);
+		const models = {D2Objects, LvlPrest};
+		const semicolons = ['D2Objects', 'LvlPrest'].map(x => [__dirname + '\\..\\data\\' + x + '.semicolon', x]);
 
 		semicolons.forEach(([file, model]) => ((data, model) => {
 			data.toString('utf8').replace('\r\n', '\n').split('\n')
@@ -1080,4 +1114,6 @@ class D2Objects {
 	module.exports.BaseItemType = BaseItemType;
 	module.exports.BaseStat = BaseStat;
 	module.exports.BaseUniqueItem = BaseUniqueItem;
+	module.exports.D2Objects = D2Objects;
+	module.exports.LvlPrest = LvlPrest;
 }
