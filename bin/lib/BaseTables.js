@@ -866,6 +866,173 @@ class BaseUniqueItem {
 	}
 }
 
+class D2Objects {
+	constructor(args) {
+		let i = 0;
+		this.Name = args[i++];
+		this.description = args[i++];
+		this.Id = args[i++];
+		this.Token = args[i++];
+		this.SpawnMax = args[i++];
+		this.Selectable0 = args[i++];
+		this.Selectable1 = args[i++];
+		this.Selectable2 = args[i++];
+		this.Selectable3 = args[i++];
+		this.Selectable4 = args[i++];
+		this.Selectable5 = args[i++];
+		this.Selectable6 = args[i++];
+		this.Selectable7 = args[i++];
+		this.TrapProb = args[i++];
+		this.SizeX = args[i++];
+		this.SizeY = args[i++];
+		this.nTgtFX = args[i++];
+		this.nTgtFY = args[i++];
+		this.nTgtBX = args[i++];
+		this.nTgtBY = args[i++];
+		this.FrameCnt0 = args[i++];
+		this.FrameCnt1 = args[i++];
+		this.FrameCnt2 = args[i++];
+		this.FrameCnt3 = args[i++];
+		this.FrameCnt4 = args[i++];
+		this.FrameCnt5 = args[i++];
+		this.FrameCnt6 = args[i++];
+		this.FrameCnt7 = args[i++];
+		this.FrameDelta0 = args[i++];
+		this.FrameDelta1 = args[i++];
+		this.FrameDelta2 = args[i++];
+		this.FrameDelta3 = args[i++];
+		this.FrameDelta4 = args[i++];
+		this.FrameDelta5 = args[i++];
+		this.FrameDelta6 = args[i++];
+		this.FrameDelta7 = args[i++];
+		this.CycleAnim0 = args[i++];
+		this.CycleAnim1 = args[i++];
+		this.CycleAnim2 = args[i++];
+		this.CycleAnim3 = args[i++];
+		this.CycleAnim4 = args[i++];
+		this.CycleAnim5 = args[i++];
+		this.CycleAnim6 = args[i++];
+		this.CycleAnim7 = args[i++];
+		this.Lit0 = args[i++];
+		this.Lit1 = args[i++];
+		this.Lit2 = args[i++];
+		this.Lit3 = args[i++];
+		this.Lit4 = args[i++];
+		this.Lit5 = args[i++];
+		this.Lit6 = args[i++];
+		this.Lit7 = args[i++];
+		this.BlocksLight0 = args[i++];
+		this.BlocksLight1 = args[i++];
+		this.BlocksLight2 = args[i++];
+		this.BlocksLight3 = args[i++];
+		this.BlocksLight4 = args[i++];
+		this.BlocksLight5 = args[i++];
+		this.BlocksLight6 = args[i++];
+		this.BlocksLight7 = args[i++];
+		this.HasCollision0 = args[i++];
+		this.HasCollision1 = args[i++];
+		this.HasCollision2 = args[i++];
+		this.HasCollision3 = args[i++];
+		this.HasCollision4 = args[i++];
+		this.HasCollision5 = args[i++];
+		this.HasCollision6 = args[i++];
+		this.HasCollision7 = args[i++];
+		this.IsAttackable0 = args[i++];
+		this.Start0 = args[i++];
+		this.Start1 = args[i++];
+		this.Start2 = args[i++];
+		this.Start3 = args[i++];
+		this.Start4 = args[i++];
+		this.Start5 = args[i++];
+		this.Start6 = args[i++];
+		this.Start7 = args[i++];
+		this.EnvEffect = args[i++];
+		this.IsDoor = args[i++];
+		this.BlocksVis = args[i++];
+		this.Orientation = args[i++];
+		this.Trans = args[i++];
+		this.OrderFlag0 = args[i++];
+		this.OrderFlag1 = args[i++];
+		this.OrderFlag2 = args[i++];
+		this.OrderFlag3 = args[i++];
+		this.OrderFlag4 = args[i++];
+		this.OrderFlag5 = args[i++];
+		this.OrderFlag6 = args[i++];
+		this.OrderFlag7 = args[i++];
+		this.PreOperate = args[i++];
+		this.Mode0 = args[i++];
+		this.Mode1 = args[i++];
+		this.Mode2 = args[i++];
+		this.Mode3 = args[i++];
+		this.Mode4 = args[i++];
+		this.Mode5 = args[i++];
+		this.Mode6 = args[i++];
+		this.Mode7 = args[i++];
+		this.Yoffset = args[i++];
+		this.Xoffset = args[i++];
+		this.Draw = args[i++];
+		this.Red = args[i++];
+		this.Green = args[i++];
+		this.Blue = args[i++];
+		this.HD = args[i++];
+		this.TR = args[i++];
+		this.LG = args[i++];
+		this.RA = args[i++];
+		this.LA = args[i++];
+		this.RH = args[i++];
+		this.LH = args[i++];
+		this.SH = args[i++];
+		this.S1 = args[i++];
+		this.S2 = args[i++];
+		this.S3 = args[i++];
+		this.S4 = args[i++];
+		this.S5 = args[i++];
+		this.S6 = args[i++];
+		this.S7 = args[i++];
+		this.S8 = args[i++];
+		this.TotalPieces = args[i++];
+		this.SubClass = args[i++];
+		this.Xspace = args[i++];
+		this.Yspace = args[i++];
+		this.NameOffset = args[i++];
+		this.MonsterOK = args[i++];
+		this.OperateRange = args[i++];
+		this.ShrineFunction = args[i++];
+		this.Restore = args[i++];
+		this.Parm0 = args[i++];
+		this.Parm1 = args[i++];
+		this.Parm2 = args[i++];
+		this.Parm3 = args[i++];
+		this.Parm4 = args[i++];
+		this.Parm5 = args[i++];
+		this.Parm6 = args[i++];
+		this.Parm7 = args[i++];
+		this.Act = args[i++];
+		this.Lockable = args[i++];
+		this.Gore = args[i++];
+		this.Sync = args[i++];
+		this.Flicker = args[i++];
+		this.Damage = args[i++];
+		this.Beta = args[i++];
+		this.Overlay = args[i++];
+		this.CollisionSubst = args[i++];
+		this.Left = args[i++];
+		this.Top = args[i++];
+		this.Width = args[i++];
+		this.Height = args[i++];
+		this.OperateFn = args[i++];
+		this.PopulateFn = args[i++];
+		this.InitFn = args[i++];
+		this.ClientFn = args[i++];
+		this.RestoreVirgins = args[i++];
+		this.BlockMissile = args[i++];
+		this.DrawUnder = args[i++];
+		this.OpenWarp = args[i++];
+		this.AutoMap = args[i++];
+
+	}
+
+}
 
 { // Just a block =)
 	/**
@@ -886,10 +1053,28 @@ class BaseUniqueItem {
 			.forEach(x => new obj(x || []));
 	}
 
-	const models = {BaseStat, BaseItemType, BaseMiscItem, BaseArmor, BaseWeapon, BaseUniqueItem};
-	const csvs = ['BaseStat', 'BaseItemType', 'BaseMiscItem', 'BaseArmor', 'BaseWeapon','BaseUniqueItem'].map(x => [__dirname + '\\..\\data\\' + x + '.csv', x]);
+	{
+		const models = {BaseStat, BaseItemType, BaseMiscItem, BaseArmor, BaseWeapon, BaseUniqueItem};
+		const csvs = ['BaseStat', 'BaseItemType', 'BaseMiscItem', 'BaseArmor', 'BaseWeapon', 'BaseUniqueItem'].map(x => [__dirname + '\\..\\data\\' + x + '.csv', x]);
 
-	csvs.forEach(([file, model]) => readCSV(fs.readFileSync(file), models[model]));
+		csvs.forEach(([file, model]) => readCSV(fs.readFileSync(file), models[model]));
+	}
+	{
+		const models = {D2Objects};
+		const semicolons = ['D2Objects'].map(x => [__dirname + '\\..\\data\\' + x + '.semicolon', x]);
+
+		semicolons.forEach(([file, model]) => ((data, model) => {
+			data.toString('utf8').replace('\r\n', '\n').split('\n')
+				.map(line => line.split(';').map(toInt => {
+					let parsed = parseInt(toInt);
+					if (parsed.toString() === toInt) {
+						return parsed
+					}
+					return toInt;
+				})).forEach(line => new model(line));
+		})(fs.readFileSync(file), models[model]));
+	}
+
 
 	module.exports.BaseItem = BaseItem;
 	module.exports.BaseItemType = BaseItemType;
