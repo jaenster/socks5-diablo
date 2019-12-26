@@ -1068,6 +1068,185 @@ class LvlPrest {
 	static instances = []
 }
 
+class Levels {
+	constructor(args) {
+		let i = 0;
+		this.Name = args[i++];
+		this.Id = args[i++];
+		this.Pal = args[i++];
+		this.Act = args[i++];
+		this.Layer = args[i++];
+		this.SizeX = args[i++];
+		this.SizeY = args[i++];
+		this.OffsetX = args[i++];
+		this.OffsetY = args[i++];
+		this.Depend = args[i++];
+		this.Rain = args[i++];
+		this.Mud = args[i++];
+		this.NoPer = args[i++];
+		this.LOSDraw = args[i++];
+		this.FloorFilter = args[i++];
+		this.BlankScreen = args[i++];
+		this.DrawEdges = args[i++];
+		this.IsInside = args[i++];
+		this.DrlgType = args[i++];
+		this.LevelType = args[i++];
+		this.SubType = args[i++];
+		this.SubTheme = args[i++];
+		this.SubWaypoint = args[i++];
+		this.SubShrine = args[i++];
+		this.Vis0 = args[i++];
+		this.Vis1 = args[i++];
+		this.Vis2 = args[i++];
+		this.Vis3 = args[i++];
+		this.Vis4 = args[i++];
+		this.Vis5 = args[i++];
+		this.Vis6 = args[i++];
+		this.Vis7 = args[i++];
+		this.Warp0 = args[i++];
+		this.Warp1 = args[i++];
+		this.Warp2 = args[i++];
+		this.Warp3 = args[i++];
+		this.Warp4 = args[i++];
+		this.Warp5 = args[i++];
+		this.Warp6 = args[i++];
+		this.Warp7 = args[i++];
+		this.Intensity = args[i++];
+		this.Red = args[i++];
+		this.Green = args[i++];
+		this.Blue = args[i++];
+		this.Portal = args[i++];
+		this.Position = args[i++];
+		this.SaveMonsters = args[i++];
+		this.Quest = args[i++];
+		this.WarpDist = args[i++];
+		this.MonLvl1 = args[i++];
+		this.MonLvl2 = args[i++];
+		this.MonLvl3 = args[i++];
+		this.MonDen = args[i++];
+		this.MonUMin = args[i++];
+		this.MonUMax = args[i++];
+		this.MonWndr = args[i++];
+		this.MonSpcWalk = args[i++];
+		this.Mtot = args[i++];
+		this.M1 = args[i++];
+		this.M2 = args[i++];
+		this.M3 = args[i++];
+		this.M4 = args[i++];
+		this.M5 = args[i++];
+		this.M6 = args[i++];
+		this.M7 = args[i++];
+		this.M8 = args[i++];
+		this.M9 = args[i++];
+		this.M10 = args[i++];
+		this.M11 = args[i++];
+		this.M12 = args[i++];
+		this.M13 = args[i++];
+		this.M14 = args[i++];
+		this.M15 = args[i++];
+		this.M16 = args[i++];
+		this.M17 = args[i++];
+		this.M18 = args[i++];
+		this.M19 = args[i++];
+		this.M20 = args[i++];
+		this.M21 = args[i++];
+		this.M22 = args[i++];
+		this.M23 = args[i++];
+		this.M24 = args[i++];
+		this.M25 = args[i++];
+		this.S1 = args[i++];
+		this.S2 = args[i++];
+		this.S3 = args[i++];
+		this.S4 = args[i++];
+		this.S5 = args[i++];
+		this.S6 = args[i++];
+		this.S7 = args[i++];
+		this.S8 = args[i++];
+		this.S9 = args[i++];
+		this.S10 = args[i++];
+		this.S11 = args[i++];
+		this.S12 = args[i++];
+		this.S13 = args[i++];
+		this.S14 = args[i++];
+		this.S15 = args[i++];
+		this.S16 = args[i++];
+		this.S17 = args[i++];
+		this.S18 = args[i++];
+		this.S19 = args[i++];
+		this.S20 = args[i++];
+		this.S21 = args[i++];
+		this.S22 = args[i++];
+		this.S23 = args[i++];
+		this.S24 = args[i++];
+		this.S25 = args[i++];
+		this.Utot = args[i++];
+		this.U1 = args[i++];
+		this.U2 = args[i++];
+		this.U3 = args[i++];
+		this.U4 = args[i++];
+		this.U5 = args[i++];
+		this.U6 = args[i++];
+		this.U7 = args[i++];
+		this.U8 = args[i++];
+		this.U9 = args[i++];
+		this.U10 = args[i++];
+		this.U11 = args[i++];
+		this.U12 = args[i++];
+		this.U13 = args[i++];
+		this.U14 = args[i++];
+		this.U15 = args[i++];
+		this.U16 = args[i++];
+		this.U17 = args[i++];
+		this.U18 = args[i++];
+		this.U19 = args[i++];
+		this.U20 = args[i++];
+		this.U21 = args[i++];
+		this.U22 = args[i++];
+		this.U23 = args[i++];
+		this.U24 = args[i++];
+		this.U25 = args[i++];
+		this.C1 = args[i++];
+		this.C2 = args[i++];
+		this.C3 = args[i++];
+		this.C4 = args[i++];
+		this.C5 = args[i++];
+		this.CA1 = args[i++];
+		this.CA2 = args[i++];
+		this.CA3 = args[i++];
+		this.CA4 = args[i++];
+		this.CA5 = args[i++];
+		this.CD1 = args[i++];
+		this.CD2 = args[i++];
+		this.CD3 = args[i++];
+		this.CD4 = args[i++];
+		this.CD5 = args[i++];
+		this.Themes = args[i++];
+		this.SoundEnv = args[i++];
+		this.Waypoint = args[i++];
+		this.LevelName = args[i++];
+		this.LevelWarp = args[i++];
+		this.EntryFile = args[i++];
+		this.ObjGrp0 = args[i++];
+		this.ObjGrp1 = args[i++];
+		this.ObjGrp2 = args[i++];
+		this.ObjGrp3 = args[i++];
+		this.ObjGrp4 = args[i++];
+		this.ObjGrp5 = args[i++];
+		this.ObjGrp6 = args[i++];
+		this.ObjGrp7 = args[i++];
+		this.ObjPrb0 = args[i++];
+		this.ObjPrb1 = args[i++];
+		this.ObjPrb2 = args[i++];
+		this.ObjPrb3 = args[i++];
+		this.ObjPrb4 = args[i++];
+		this.ObjPrb5 = args[i++];
+		this.ObjPrb6 = args[i++];
+		this.ObjPrb7 = args[i++];
+		this.Beta = args[i++];
+	}
+
+}
+
 { // Just a block =)
 	/**
 	 *
@@ -1094,8 +1273,8 @@ class LvlPrest {
 		csvs.forEach(([file, model]) => readCSV(fs.readFileSync(file), models[model]));
 	}
 	{
-		const models = {D2Objects, LvlPrest};
-		const semicolons = ['D2Objects', 'LvlPrest'].map(x => [__dirname + '\\..\\data\\' + x + '.semicolon', x]);
+		const models = {D2Objects, Levels, LvlPrest};
+		const semicolons = ['D2Objects', 'Levels', 'LvlPrest'].map(x => [__dirname + '\\..\\data\\' + x + '.semicolon', x]);
 
 		semicolons.forEach(([file, model]) => ((data, model) => {
 			data.toString('utf8').replace('\r\n', '\n').split('\n')
