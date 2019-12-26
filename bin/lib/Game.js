@@ -1,17 +1,17 @@
 const GameServer = require('./GameServer');
 const BaseLevel = require('./BaseLevel');
 const UnitCollector = require('./UnitCollector');
-const ItemCollector = require('./itemCollector');
+const ItemCollector = require('./ItemCollector');
 
 class Game {
 	constructor(diabloProxy) {
 		// ToDo: Hook myself upon the realm server proxy
 		this.diabloProxy = diabloProxy;
 		this.gameServer = new GameServer(this);
-		this.players = [];
-		this.items = [];
 
+		// Collect units
 		this.unitCollector = new UnitCollector(this);
+		// Collect items (is also an unit)
 		this.itemCollector = new ItemCollector(this);
 
 		this.me = this.unitCollector.createMe();

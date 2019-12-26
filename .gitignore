@@ -1,2 +1,5 @@
-/config.js
+config.js
+
 .idea
+/bin/log/
+/node_modules/

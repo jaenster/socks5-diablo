@@ -1,6 +1,6 @@
 class Unit {
 	constructor(UnitId, UnitType, UnitCode, x, y, life) {
-		this.id = UnitId;
+		this.uid = UnitId;
 		this.type = UnitType;
 		this.classid = UnitCode;
 		this.x = x;

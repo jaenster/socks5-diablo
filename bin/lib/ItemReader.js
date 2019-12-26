@@ -30,10 +30,7 @@ function readStat(br, item) {
 	}
 	const pushStat = (what) => {
 		if (!Array.isArray(item.stats[baseStat.Stat])) item.stats[baseStat.Stat] = [];
-		if (typeof item.stats[baseStat.Stat].push !== 'function') {
-			console.log();
-		}
-		item.stats[baseStat.Stat].push(what)
+		item.stats[baseStat.Stat].push(what);
 		return what;
 	};
 	if (baseStat.SaveParamBits !== -1) {
