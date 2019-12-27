@@ -1,5 +1,6 @@
 const fs = require('fs');
 const {ItemType, ItemCategory} = require("./Enums");
+const DS1 = require('./mephistools/ds1ManualReader');
 
 class BaseItem {
 	constructor() {
@@ -866,6 +867,402 @@ class BaseUniqueItem {
 	}
 }
 
+class D2Objects {
+	constructor(args) {
+		let i = 0;
+		this.Name = args[i++];
+		this.description = args[i++];
+		this.Id = args[i++];
+		this.Token = args[i++];
+		this.SpawnMax = args[i++];
+		this.Selectable0 = args[i++];
+		this.Selectable1 = args[i++];
+		this.Selectable2 = args[i++];
+		this.Selectable3 = args[i++];
+		this.Selectable4 = args[i++];
+		this.Selectable5 = args[i++];
+		this.Selectable6 = args[i++];
+		this.Selectable7 = args[i++];
+		this.TrapProb = args[i++];
+		this.SizeX = args[i++];
+		this.SizeY = args[i++];
+		this.nTgtFX = args[i++];
+		this.nTgtFY = args[i++];
+		this.nTgtBX = args[i++];
+		this.nTgtBY = args[i++];
+		this.FrameCnt0 = args[i++];
+		this.FrameCnt1 = args[i++];
+		this.FrameCnt2 = args[i++];
+		this.FrameCnt3 = args[i++];
+		this.FrameCnt4 = args[i++];
+		this.FrameCnt5 = args[i++];
+		this.FrameCnt6 = args[i++];
+		this.FrameCnt7 = args[i++];
+		this.FrameDelta0 = args[i++];
+		this.FrameDelta1 = args[i++];
+		this.FrameDelta2 = args[i++];
+		this.FrameDelta3 = args[i++];
+		this.FrameDelta4 = args[i++];
+		this.FrameDelta5 = args[i++];
+		this.FrameDelta6 = args[i++];
+		this.FrameDelta7 = args[i++];
+		this.CycleAnim0 = args[i++];
+		this.CycleAnim1 = args[i++];
+		this.CycleAnim2 = args[i++];
+		this.CycleAnim3 = args[i++];
+		this.CycleAnim4 = args[i++];
+		this.CycleAnim5 = args[i++];
+		this.CycleAnim6 = args[i++];
+		this.CycleAnim7 = args[i++];
+		this.Lit0 = args[i++];
+		this.Lit1 = args[i++];
+		this.Lit2 = args[i++];
+		this.Lit3 = args[i++];
+		this.Lit4 = args[i++];
+		this.Lit5 = args[i++];
+		this.Lit6 = args[i++];
+		this.Lit7 = args[i++];
+		this.BlocksLight0 = args[i++];
+		this.BlocksLight1 = args[i++];
+		this.BlocksLight2 = args[i++];
+		this.BlocksLight3 = args[i++];
+		this.BlocksLight4 = args[i++];
+		this.BlocksLight5 = args[i++];
+		this.BlocksLight6 = args[i++];
+		this.BlocksLight7 = args[i++];
+		this.HasCollision0 = args[i++];
+		this.HasCollision1 = args[i++];
+		this.HasCollision2 = args[i++];
+		this.HasCollision3 = args[i++];
+		this.HasCollision4 = args[i++];
+		this.HasCollision5 = args[i++];
+		this.HasCollision6 = args[i++];
+		this.HasCollision7 = args[i++];
+		this.IsAttackable0 = args[i++];
+		this.Start0 = args[i++];
+		this.Start1 = args[i++];
+		this.Start2 = args[i++];
+		this.Start3 = args[i++];
+		this.Start4 = args[i++];
+		this.Start5 = args[i++];
+		this.Start6 = args[i++];
+		this.Start7 = args[i++];
+		this.EnvEffect = args[i++];
+		this.IsDoor = args[i++];
+		this.BlocksVis = args[i++];
+		this.Orientation = args[i++];
+		this.Trans = args[i++];
+		this.OrderFlag0 = args[i++];
+		this.OrderFlag1 = args[i++];
+		this.OrderFlag2 = args[i++];
+		this.OrderFlag3 = args[i++];
+		this.OrderFlag4 = args[i++];
+		this.OrderFlag5 = args[i++];
+		this.OrderFlag6 = args[i++];
+		this.OrderFlag7 = args[i++];
+		this.PreOperate = args[i++];
+		this.Mode0 = args[i++];
+		this.Mode1 = args[i++];
+		this.Mode2 = args[i++];
+		this.Mode3 = args[i++];
+		this.Mode4 = args[i++];
+		this.Mode5 = args[i++];
+		this.Mode6 = args[i++];
+		this.Mode7 = args[i++];
+		this.Yoffset = args[i++];
+		this.Xoffset = args[i++];
+		this.Draw = args[i++];
+		this.Red = args[i++];
+		this.Green = args[i++];
+		this.Blue = args[i++];
+		this.HD = args[i++];
+		this.TR = args[i++];
+		this.LG = args[i++];
+		this.RA = args[i++];
+		this.LA = args[i++];
+		this.RH = args[i++];
+		this.LH = args[i++];
+		this.SH = args[i++];
+		this.S1 = args[i++];
+		this.S2 = args[i++];
+		this.S3 = args[i++];
+		this.S4 = args[i++];
+		this.S5 = args[i++];
+		this.S6 = args[i++];
+		this.S7 = args[i++];
+		this.S8 = args[i++];
+		this.TotalPieces = args[i++];
+		this.SubClass = args[i++];
+		this.Xspace = args[i++];
+		this.Yspace = args[i++];
+		this.NameOffset = args[i++];
+		this.MonsterOK = args[i++];
+		this.OperateRange = args[i++];
+		this.ShrineFunction = args[i++];
+		this.Restore = args[i++];
+		this.Parm0 = args[i++];
+		this.Parm1 = args[i++];
+		this.Parm2 = args[i++];
+		this.Parm3 = args[i++];
+		this.Parm4 = args[i++];
+		this.Parm5 = args[i++];
+		this.Parm6 = args[i++];
+		this.Parm7 = args[i++];
+		this.Act = args[i++];
+		this.Lockable = args[i++];
+		this.Gore = args[i++];
+		this.Sync = args[i++];
+		this.Flicker = args[i++];
+		this.Damage = args[i++];
+		this.Beta = args[i++];
+		this.Overlay = args[i++];
+		this.CollisionSubst = args[i++];
+		this.Left = args[i++];
+		this.Top = args[i++];
+		this.Width = args[i++];
+		this.Height = args[i++];
+		this.OperateFn = args[i++];
+		this.PopulateFn = args[i++];
+		this.InitFn = args[i++];
+		this.ClientFn = args[i++];
+		this.RestoreVirgins = args[i++];
+		this.BlockMissile = args[i++];
+		this.DrawUnder = args[i++];
+		this.OpenWarp = args[i++];
+		this.AutoMap = args[i++];
+		D2Objects.instances.push(this);
+	}
+
+	static instances = []
+}
+
+class LvlPrest {
+	constructor(args) {
+		let i = 0;
+		this.Name = args[i++];
+		this.Def = args[i++];
+		this.LevelId = args[i++];
+		this.Populate = args[i++];
+		this.Logicals = args[i++];
+		this.Outdoors = args[i++];
+		this.Animate = args[i++];
+		this.KillEdge = args[i++];
+		this.FillBlanks = args[i++];
+		this.SizeX = args[i++];
+		this.SizeY = args[i++];
+		this.AutoMap = args[i++];
+		this.Scan = args[i++];
+		this.Pops = args[i++];
+		this.PopPad = args[i++];
+		this.Files = args[i++];
+		this.File1 = args[i++];
+		this.File2 = args[i++];
+		this.File3 = args[i++];
+		this.File4 = args[i++];
+		this.File5 = args[i++];
+		this.File6 = args[i++];
+		this.Dt1Mask = args[i++];
+		this.Beta = args[i++];
+		LvlPrest.instances.push(this);
+	}
+
+	static instances = []
+}
+
+class Levels {
+	constructor(args) {
+		let i = 0;
+		this.Name = args[i++];
+		this.Id = args[i++];
+		this.Pal = args[i++];
+		this.Act = args[i++];
+		this.Layer = args[i++];
+		this.SizeX = args[i++];
+		this.SizeY = args[i++];
+		this.OffsetX = args[i++];
+		this.OffsetY = args[i++];
+		this.Depend = args[i++];
+		this.Rain = args[i++];
+		this.Mud = args[i++];
+		this.NoPer = args[i++];
+		this.LOSDraw = args[i++];
+		this.FloorFilter = args[i++];
+		this.BlankScreen = args[i++];
+		this.DrawEdges = args[i++];
+		this.IsInside = args[i++];
+		this.DrlgType = args[i++];
+		this.LevelType = args[i++];
+		this.SubType = args[i++];
+		this.SubTheme = args[i++];
+		this.SubWaypoint = args[i++];
+		this.SubShrine = args[i++];
+		this.Vis0 = args[i++];
+		this.Vis1 = args[i++];
+		this.Vis2 = args[i++];
+		this.Vis3 = args[i++];
+		this.Vis4 = args[i++];
+		this.Vis5 = args[i++];
+		this.Vis6 = args[i++];
+		this.Vis7 = args[i++];
+		this.Warp0 = args[i++];
+		this.Warp1 = args[i++];
+		this.Warp2 = args[i++];
+		this.Warp3 = args[i++];
+		this.Warp4 = args[i++];
+		this.Warp5 = args[i++];
+		this.Warp6 = args[i++];
+		this.Warp7 = args[i++];
+		this.Intensity = args[i++];
+		this.Red = args[i++];
+		this.Green = args[i++];
+		this.Blue = args[i++];
+		this.Portal = args[i++];
+		this.Position = args[i++];
+		this.SaveMonsters = args[i++];
+		this.Quest = args[i++];
+		this.WarpDist = args[i++];
+		this.MonLvl1 = args[i++];
+		this.MonLvl2 = args[i++];
+		this.MonLvl3 = args[i++];
+		this.MonDen = args[i++];
+		this.MonUMin = args[i++];
+		this.MonUMax = args[i++];
+		this.MonWndr = args[i++];
+		this.MonSpcWalk = args[i++];
+		this.Mtot = args[i++];
+		this.M1 = args[i++];
+		this.M2 = args[i++];
+		this.M3 = args[i++];
+		this.M4 = args[i++];
+		this.M5 = args[i++];
+		this.M6 = args[i++];
+		this.M7 = args[i++];
+		this.M8 = args[i++];
+		this.M9 = args[i++];
+		this.M10 = args[i++];
+		this.M11 = args[i++];
+		this.M12 = args[i++];
+		this.M13 = args[i++];
+		this.M14 = args[i++];
+		this.M15 = args[i++];
+		this.M16 = args[i++];
+		this.M17 = args[i++];
+		this.M18 = args[i++];
+		this.M19 = args[i++];
+		this.M20 = args[i++];
+		this.M21 = args[i++];
+		this.M22 = args[i++];
+		this.M23 = args[i++];
+		this.M24 = args[i++];
+		this.M25 = args[i++];
+		this.S1 = args[i++];
+		this.S2 = args[i++];
+		this.S3 = args[i++];
+		this.S4 = args[i++];
+		this.S5 = args[i++];
+		this.S6 = args[i++];
+		this.S7 = args[i++];
+		this.S8 = args[i++];
+		this.S9 = args[i++];
+		this.S10 = args[i++];
+		this.S11 = args[i++];
+		this.S12 = args[i++];
+		this.S13 = args[i++];
+		this.S14 = args[i++];
+		this.S15 = args[i++];
+		this.S16 = args[i++];
+		this.S17 = args[i++];
+		this.S18 = args[i++];
+		this.S19 = args[i++];
+		this.S20 = args[i++];
+		this.S21 = args[i++];
+		this.S22 = args[i++];
+		this.S23 = args[i++];
+		this.S24 = args[i++];
+		this.S25 = args[i++];
+		this.Utot = args[i++];
+		this.U1 = args[i++];
+		this.U2 = args[i++];
+		this.U3 = args[i++];
+		this.U4 = args[i++];
+		this.U5 = args[i++];
+		this.U6 = args[i++];
+		this.U7 = args[i++];
+		this.U8 = args[i++];
+		this.U9 = args[i++];
+		this.U10 = args[i++];
+		this.U11 = args[i++];
+		this.U12 = args[i++];
+		this.U13 = args[i++];
+		this.U14 = args[i++];
+		this.U15 = args[i++];
+		this.U16 = args[i++];
+		this.U17 = args[i++];
+		this.U18 = args[i++];
+		this.U19 = args[i++];
+		this.U20 = args[i++];
+		this.U21 = args[i++];
+		this.U22 = args[i++];
+		this.U23 = args[i++];
+		this.U24 = args[i++];
+		this.U25 = args[i++];
+		this.C1 = args[i++];
+		this.C2 = args[i++];
+		this.C3 = args[i++];
+		this.C4 = args[i++];
+		this.C5 = args[i++];
+		this.CA1 = args[i++];
+		this.CA2 = args[i++];
+		this.CA3 = args[i++];
+		this.CA4 = args[i++];
+		this.CA5 = args[i++];
+		this.CD1 = args[i++];
+		this.CD2 = args[i++];
+		this.CD3 = args[i++];
+		this.CD4 = args[i++];
+		this.CD5 = args[i++];
+		this.Themes = args[i++];
+		this.SoundEnv = args[i++];
+		this.Waypoint = args[i++];
+		this.LevelName = args[i++];
+		this.LevelWarp = args[i++];
+		this.EntryFile = args[i++];
+		this.ObjGrp0 = args[i++];
+		this.ObjGrp1 = args[i++];
+		this.ObjGrp2 = args[i++];
+		this.ObjGrp3 = args[i++];
+		this.ObjGrp4 = args[i++];
+		this.ObjGrp5 = args[i++];
+		this.ObjGrp6 = args[i++];
+		this.ObjGrp7 = args[i++];
+		this.ObjPrb0 = args[i++];
+		this.ObjPrb1 = args[i++];
+		this.ObjPrb2 = args[i++];
+		this.ObjPrb3 = args[i++];
+		this.ObjPrb4 = args[i++];
+		this.ObjPrb5 = args[i++];
+		this.ObjPrb6 = args[i++];
+		this.ObjPrb7 = args[i++];
+		this.Beta = args[i++];
+
+		Levels.instances[this.Id] = this;
+	}
+
+	static instances = {};
+
+}
+
+class LevelPreset {
+	constructor(levelid) {
+		this.levels = [0, 1, 2, 3, 4, 5, 7]
+			.map(id => LvlPrest.instances[levelid]['File' + id])
+			.filter(_ => _)
+			.map(file => DS1.loadFile(__dirname + '\\..\\data\\tiles\\', file, D2Objects));
+		LevelPreset.instances.push(this);
+	}
+
+	static instances = [];
+}
 
 { // Just a block =)
 	/**
@@ -886,13 +1283,35 @@ class BaseUniqueItem {
 			.forEach(x => new obj(x || []));
 	}
 
-	const models = {BaseStat, BaseItemType, BaseMiscItem, BaseArmor, BaseWeapon, BaseUniqueItem};
-	const csvs = ['BaseStat', 'BaseItemType', 'BaseMiscItem', 'BaseArmor', 'BaseWeapon','BaseUniqueItem'].map(x => [__dirname + '\\..\\data\\' + x + '.csv', x]);
+	{
+		const models = {BaseStat, BaseItemType, BaseMiscItem, BaseArmor, BaseWeapon, BaseUniqueItem};
+		const csvs = ['BaseStat', 'BaseItemType', 'BaseMiscItem', 'BaseArmor', 'BaseWeapon', 'BaseUniqueItem'].map(x => [__dirname + '\\..\\data\\' + x + '.csv', x]);
 
-	csvs.forEach(([file, model]) => readCSV(fs.readFileSync(file), models[model]));
+		csvs.forEach(([file, model]) => readCSV(fs.readFileSync(file), models[model]));
+	}
+	{
+		const models = {D2Objects, Levels, LvlPrest};
+		const semicolons = ['D2Objects', 'Levels', 'LvlPrest'].map(x => [__dirname + '\\..\\data\\' + x + '.semicolon', x]);
+
+		semicolons.forEach(([file, model]) => ((data, model) => {
+			data.toString('utf8').replace('\r\n', '\n').split('\n')
+				.map(line => line.split(';').map(toInt => {
+					let parsed = parseInt(toInt);
+					if (parsed.toString() === toInt) {
+						return parsed
+					}
+					return toInt;
+				})).forEach(line => new model(line));
+		})(fs.readFileSync(file), models[model]));
+	}
+
 
 	module.exports.BaseItem = BaseItem;
 	module.exports.BaseItemType = BaseItemType;
 	module.exports.BaseStat = BaseStat;
 	module.exports.BaseUniqueItem = BaseUniqueItem;
+	module.exports.D2Objects = D2Objects;
+	module.exports.LvlPrest = LvlPrest;
+	console.log('Loading lvl presets...');
+	LvlPrest.instances.forEach((key, index) => new LevelPreset(index))
 }

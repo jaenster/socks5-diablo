@@ -52,6 +52,12 @@ class BitReader {
 		return parseInt(this.data.slice(start, end) || 1, 2) | 0;
 	}
 
+	slice(length) {
+		let buffer = Buffer.alloc(length);
+		for (let i = 0; i < length; i++) buffer.writeUInt8(this.bit(8), i);
+		return buffer;
+	}
+
 	bitAt(pos, length) {
 		this.reset(pos);
 		return this.bit(length);
@@ -88,13 +94,10 @@ class BitReader {
 		if (typeof terminator === 'string') terminator = terminator[0].charCodeAt(0);
 
 		let ret = '';
-		for (let i = 0, tmp; // Set values
-			// Only continue if we dont exceed
-			 (tmp = this.bit(charLength)) !== terminator && i < size;
-			// add the tmp value to the return value
-			 i++, ret += String.fromCharCode(tmp)
-		) ;
-
+		for (let i = 0, tmp; i < size && size !== undefined; i++) {
+			if ((tmp = this.bit(charLength)) === terminator) break;
+			ret += String.fromCharCode(tmp)
+		}
 		return ret;
 	}
 
