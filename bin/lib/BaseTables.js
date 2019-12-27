@@ -1254,12 +1254,14 @@ class Levels {
 
 class LevelPreset {
 	constructor(levelid) {
-		const levels = [0, 1, 2, 3, 4, 5, 7]
+		this.levels = [0, 1, 2, 3, 4, 5, 7]
 			.map(id => LvlPrest.instances[levelid]['File' + id])
 			.filter(_ => _)
 			.map(file => DS1.loadFile(__dirname + '\\..\\data\\tiles\\', file, D2Objects));
-		console.log('test');
+		LevelPreset.instances.push(this);
 	}
+
+	static instances = [];
 }
 
 { // Just a block =)
@@ -1310,5 +1312,6 @@ class LevelPreset {
 	module.exports.BaseUniqueItem = BaseUniqueItem;
 	module.exports.D2Objects = D2Objects;
 	module.exports.LvlPrest = LvlPrest;
-	new LevelPreset(543);
+	console.log('Loading lvl presets...');
+	LvlPrest.instances.forEach((key, index) => new LevelPreset(index))
 }

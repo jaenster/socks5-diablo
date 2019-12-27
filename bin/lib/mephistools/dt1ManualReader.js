@@ -60,7 +60,12 @@ class Dt1 {
   static load(basePath, filename) {
     const lowerFilename = (basePath + '/' + filename.toLowerCase()).replace(/\//g, '\\').replace('\\data\\global\\tiles', '');
     let offset = 0;
-    const bytes = fs.readFileSync(lowerFilename);
+    let bytes;
+    try {
+      bytes = fs.readFileSync(lowerFilename);
+    } catch (e) {
+      return new Dt1();
+    }
     const dt1 = new Dt1();
     dt1.filename = filename;
 
@@ -97,7 +102,7 @@ class Sampler {
   }
 
   add(newTiles) {
-    newTiles.forEach(tile => {
+    (newTiles || []).forEach(tile => {
       let list = this.tiles[tile.index];
       list = list === undefined ? null : list;
       if (list === null) {
