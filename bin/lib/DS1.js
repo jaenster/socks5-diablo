@@ -16,8 +16,14 @@ class DS1 {
 	static fromFile(filename) {
 		const {D2Objects: objs} = require('./BaseTables');
 		const obj = {};
-		const readCells = (cells) => cells.map(cell => ['prop1', 'prop2', 'prop3', 'prop4'].map(prop => cell[prop] = br.readUInt8()));
-		const readOrientations = (cells) => cells.map(cell => ['orientation'].map(prop => cell[prop] = br.readUInt8()));
+		const readCells = (cells) => {
+			// Array has an length yet it is empty
+			for (let id = 0; id < cells.length; id++) {
+				if (!Array.isArray(cells[id])) cells[id] = [];
+				['prop1', 'prop2', 'prop3', 'prop4'].map(prop => cells[id][prop] = br.byte);
+			}
+		}
+		const readOrientations = (cells) => cells.map(cell => ['orientation'].map(prop => cell[prop] = br.byte));
 
 		let bitReader = Bitreader.from(fs.readFileSync(__dirname + '\\..\\data\\tiles\\' + filename.replace(/\//g, '\\')));
 		const br = Object.defineProperties({}, Bitreader.shortHandBr(bitReader));
@@ -35,7 +41,10 @@ class DS1 {
 
 			for (let i = 0; i < count; i++) obj.dt1Files.push(br.string(100, 8).toLowerCase());
 
-			obj.dt1Files.forEach(file => obj.sampler.add(DT1.fromFile(file.replace(/\\d2\\data\\global/g, '').replace('tg1', 'dt1'))))
+			obj.dt1Files.forEach(file => {
+				const dt1 = DT1.fromFile(file.replace(/\\d2\\data\\global/g, '').replace('tg1', 'dt1'));
+				obj.sampler.add(dt1.titles)
+			})
 		}
 
 		if (obj.version >= 9 && obj.version <= 13) br.pos += 8 * 8;
@@ -125,7 +134,7 @@ class DS1 {
 				info.y = br.dword;
 
 				if (obj.version > 5) {
-					let flags = br.dword() // flags
+					let flags = br.dword // flags
 				}
 
 				info.preset = {};

@@ -1,6 +1,6 @@
 const fs = require('fs');
 const {ItemType, ItemCategory} = require("./Enums");
-const DS1 = require('./DS1');
+const DS1 = require('./mephistools/ds1ManualReader');
 
 class BaseItem {
 	constructor() {
@@ -1244,7 +1244,11 @@ class Levels {
 		this.ObjPrb6 = args[i++];
 		this.ObjPrb7 = args[i++];
 		this.Beta = args[i++];
+
+		Levels.instances[this.Id] = this;
 	}
+
+	static instances = {};
 
 }
 
@@ -1253,8 +1257,8 @@ class LevelPreset {
 		const levels = [0, 1, 2, 3, 4, 5, 7]
 			.map(id => LvlPrest.instances[levelid]['File' + id])
 			.filter(_ => _)
-			.map(DS1.fromFile);
-
+			.map(file => DS1.loadFile(__dirname + '\\..\\data\\tiles\\', file, D2Objects));
+		console.log('test');
 	}
 }
 
@@ -1306,5 +1310,5 @@ class LevelPreset {
 	module.exports.BaseUniqueItem = BaseUniqueItem;
 	module.exports.D2Objects = D2Objects;
 	module.exports.LvlPrest = LvlPrest;
-	new LevelPreset(53);
+	new LevelPreset(543);
 }

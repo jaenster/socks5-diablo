@@ -9,6 +9,7 @@ class DT1 {
 		const br = Object.defineProperties({}, Bitreader.shortHandBr(bitReader));
 		model.version1 = br.dword;
 		model.version2 = br.dword;
+		model.titles = [];
 		if (model.version1 !== 7 || model.version2 !== 6) return model;
 
 		bitReader.pos += 260 * 8;
@@ -17,7 +18,6 @@ class DT1 {
 		const tileCount = br.dword;
 		bitReader.pos += 4 * 8;
 
-		model.titles = [];
 		// Fill the array
 		for (let i = 0; i < tileCount; i++) model.titles[i] = Tile.fromBuffer(bitReader, br);
 
@@ -31,6 +31,7 @@ class DT1 {
 		//
 		// 		}
 		// 	})
+		return model;
 
 	}
 }
@@ -60,7 +61,7 @@ class Tile {
 		self.blockCount = br.dword;
 		bitReader.pos += 12 * 8;
 		self.index = Tile.Index(self.mainIndex, self.subIndex, self.orientation)
-		return this;
+		return self;
 	}
 
 	static Index(mainIndex, subIndex, orientation) {
@@ -70,11 +71,28 @@ class Tile {
 
 class Sampler {
 	constructor() {
-
+		this.tiles = {}
+		this.rarities = {}
+		this.dt1Count = 0
 	}
 
-	add() {
+	add(newTiles) {
+		newTiles.forEach(tile => {
+			const list = this.tiles[tile.index] = this.tiles[tile.index] || [];
 
+			if (this.dt1Count === 0) {
+				list.splice(0, 0, tile)
+			} else {
+				list.push(tile)
+			}
+
+			if (!(tile.index in this.rarities)) {
+				this.rarities[tile.index] = tile.rarity
+			} else {
+				this.rarities[tile.index] += tile.rarity
+			}
+		});
+		this.dt1Count += 1
 	}
 }
 
