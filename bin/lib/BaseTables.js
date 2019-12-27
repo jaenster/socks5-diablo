@@ -1,5 +1,6 @@
 const fs = require('fs');
 const {ItemType, ItemCategory} = require("./Enums");
+const DS1 = require('./DS1');
 
 class BaseItem {
 	constructor() {
@@ -1247,6 +1248,16 @@ class Levels {
 
 }
 
+class LevelPreset {
+	constructor(levelid) {
+		const levels = [0, 1, 2, 3, 4, 5, 7]
+			.map(id => LvlPrest.instances[levelid]['File' + id])
+			.filter(_ => _)
+			.map(DS1.fromFile);
+
+	}
+}
+
 { // Just a block =)
 	/**
 	 *
@@ -1295,4 +1306,5 @@ class Levels {
 	module.exports.BaseUniqueItem = BaseUniqueItem;
 	module.exports.D2Objects = D2Objects;
 	module.exports.LvlPrest = LvlPrest;
+	new LevelPreset(53);
 }
