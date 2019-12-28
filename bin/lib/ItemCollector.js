@@ -8,11 +8,10 @@ class ItemCollector {
 	}
 
 	newItem(item) {
-		const unit = new Item();
-		Object.keys(item).forEach(key => unit[key] = item[key]);
+		this.items.push(item);
+		this.game.unitCollector.collection.push(item); // Add it to the unit collector obv, as
 
-		this.items.push(unit);
-		// An item i own
+		// An item i own, add directly
 		if (item.ownerType === 0 && item.ownerUID === this.game.me.uid) {
 			this.game.me.items.push(item);
 		}
@@ -20,12 +19,18 @@ class ItemCollector {
 		// Is this item socketed in another item?
 		if (item.ownerType === 4) {
 			// Lets find the owner
-			unit.parent = this.items.find(element => element.uid === item.ownerUID);
-			if (unit.parent) {
-				unit.items.push(unit);
-			}
+			item.parent = this.items.find(element => element.uid === item.ownerUID);
+
+			// If parent is found, add it to its list of items
+			if (item.parent) item.parent.items.push(item);
 		}
 	}
+
+	destroy() {
+		this.items.splice(0, this.items.length);
+		this.game = null;
+	}
+
 }
 
 

@@ -55,6 +55,7 @@ class Dt1 {
         offset += 4
       }
     }
+    bytes = null; // Garbage collector optimizer
   }
 
   static load(basePath, filename) {
@@ -79,6 +80,7 @@ class Dt1 {
 
     offset += 260;
     Dt1.readTiles(dt1, bytes, offset);
+    bytes = null; // Garbage collector optimizer
     return dt1
   }
 }

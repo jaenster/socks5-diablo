@@ -11,12 +11,19 @@ class Game {
 
 		// Collect units
 		this.unitCollector = new UnitCollector(this);
+
 		// Collect items (is also an unit)
 		this.itemCollector = new ItemCollector(this);
 
 		this.me = this.unitCollector.createMe();
 		this.collectData(); // Do this in another function to prevent memory leaks
 		delete this.collectData; // Doesnt need to be called again
+
+	}
+
+	destroy() {
+		// For all items we have, we call the destroy function if need
+		Object.keys(this).filter(key => this[key] && this[key].hasOwnProperty('destroy')).forEach(key => this[key].destroy());
 	}
 
 	collectData() {
@@ -31,6 +38,9 @@ class Game {
 			this.area = packetData.Area_Id;
 			this.act = packetData.Act;
 		});
+
+		// Upon game termination
+		this.gameServer.once(0xB0, _ => this.destroy());
 	}
 
 }

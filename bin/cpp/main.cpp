@@ -34,6 +34,8 @@ Napi::Object InitD2Init(Napi::Env env, Napi::Object exports) {
     exports.Set(
             "initD2", Napi::Function::New(env, InitD2)
     );
+
+    return exports;
 }
 
 Napi::Object InitAll(Napi::Env env, Napi::Object exports) {

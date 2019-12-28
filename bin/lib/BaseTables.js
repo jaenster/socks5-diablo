@@ -1312,6 +1312,6 @@ class LevelPreset {
 	module.exports.BaseUniqueItem = BaseUniqueItem;
 	module.exports.D2Objects = D2Objects;
 	module.exports.LvlPrest = LvlPrest;
-	console.log('Loading lvl presets...');
-	LvlPrest.instances.forEach((key, index) => new LevelPreset(index))
+	// console.log('Loading lvl presets...');
+	// LvlPrest.instances.forEach((key, index) => new LevelPreset(index))
 }
