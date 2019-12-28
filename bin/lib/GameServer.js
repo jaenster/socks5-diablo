@@ -10,12 +10,8 @@ class GameServer extends require('events') {
 		this.game = game;
 		this.game.diabloProxy.hooks.server.push(buffer => {
 			let offset = 0;
-			const packets = [];
 
-			while (true) {
-				if (offset === buffer.length) { // Done parsing packets
-					break;
-				}
+			while (offset < buffer.length) {
 				const checkBuffer = Buffer.alloc(Math.min(buffer.length - offset, 255));
 				for (let i = 0; i < Math.min(buffer.length - offset, 255); i++) checkBuffer.writeUInt8(buffer.readUInt8(i + offset), i);
 
@@ -60,7 +56,6 @@ class GameServer extends require('events') {
 					case 0x9D:
 						try {
 							packetData = new ItemReader(packetBuffer, game);
-							this.game.itemCollector.newItem(packetData);
 						} catch(e){
 							console.log('Failed to parse packet ',e);
 							continue; // Failed to parse packet
@@ -75,6 +70,8 @@ class GameServer extends require('events') {
 				}
 				this.emit(null, {packetData, game});
 				this.emit(packetBuffer[0], {packetData, game});
+				GameServer.hooks.forEach(hook => typeof hook === 'function' && hook.apply(this.game, [{raw: packetBuffer, ...packetData}]));
+				if (packetBuffer[0] === 0xB0) break;
 			}
 		})
 	}
@@ -92,7 +89,7 @@ class GameServer extends require('events') {
 		const inHex = packetId.toString(16);
 		switch (packetId) {
 			case 0x26: // Chat msg
-				return this.getChatPacketSize(data, size);
+				return GameServer.getChatPacketSize(bytes, size);
 
 			case 0x5b: // Player in game
 				return bytes.readUInt16LE(offset + 1);
@@ -152,14 +149,14 @@ class GameServer extends require('events') {
 
 	/**
 	 *
-	 * @param {buffer} data
-	 * @param {size} size
+	 * @param {Buffer} data
+	 * @param {number} size
 	 */
 	static getChatPacketSize(data, size) {
 		if (size >= 12) {
-
+			return 1; //ToDo; obv fill in correctly
 		}
-
+		return -1;
 	}
 
 	static hooks = [];

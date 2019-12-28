@@ -1,5 +1,6 @@
-class Unit {
+class Unit extends require('events') {
 	constructor(UnitId, UnitType, UnitCode, x, y, life) {
+		super();
 		this.uid = UnitId;
 		this.type = UnitType;
 		this.classid = UnitCode;

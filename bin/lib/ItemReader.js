@@ -10,7 +10,7 @@ const BitReader = require('./BitReader');
 const {ItemFlags, ItemContainer, EquipmentLocation, ItemActionType, ItemType, ItemQuality, ItemDestination, ItemCategory, ItemAffixType, ItemNames, MagicSuffixType, MagicPrefixType, StatType} = require('./Enums');
 const {BaseItem, BaseStat} = require('./BaseTables');
 const {ReanimateStat, ElementalSkillsBonusStat, ClassSkillsBonusStat, AuraStat, SkillBonusStat, ChargedSkillStat, SkillOnEventStat, SkillTabBonusStat, PerLevelStat, DamageRangeStat, ColdDamageStat, PoisonDamageStat, ReplenishStat, SignedStat, UnsignedStat,} = require('./StatTypes');
-
+const Item = require('./Item');
 /**
  *
  * @param br
@@ -156,244 +156,254 @@ function readStat(br, item) {
  * @param {Game} game
  */
 function itemParser(buffer, game) {
-	const br = new BitReader(buffer), item = {};
-	br.pos = 8; // The first byte is the packet identifyer
-	Object.defineProperties(this, BitReader.shortHandBr(br));
+	const tmpItem = (() => {
+		const br = new BitReader(buffer), item = {};
+		br.pos = 8; // The first byte is the packet identifyer
+		Object.defineProperties(this, BitReader.shortHandBr(br));
 
-	item.action = this.byte;
-	item.packetLength = this.byte;
-	item.category = this.byte;
-	item.uid = this.dword;
+		item.action = this.byte;
+		item.packetLength = this.byte;
+		item.category = this.byte;
+		item.uid = this.dword;
 
-	if (buffer[0] === 0x9d) {
-		item.ownerType = this.byte;
-		item.ownerUID = this.dword;
-	} else {
-		item.ownerType = 0; // Its an private item, aka on us. We are an player
-		item.ownerUID = game.me.uid;
-	}
-	const flags = this.dword;
-	item.flags = {
-		None: (flags & ItemFlags.None) === ItemFlags.None,
-		Equipped: (flags & ItemFlags.Equipped) === ItemFlags.Equipped,
-		InSocket: (flags & ItemFlags.InSocket) === ItemFlags.InSocket,
-		Identified: (flags & ItemFlags.Identified) === ItemFlags.Identified,
-		x20: (flags & ItemFlags.x20) === ItemFlags.x20,
-		SwitchedIn: (flags & ItemFlags.SwitchedIn) === ItemFlags.SwitchedIn,
-		SwitchedOut: (flags & ItemFlags.SwitchedOut) === ItemFlags.SwitchedOut,
-		Broken: (flags & ItemFlags.Broken) === ItemFlags.Broken,
-		Duplicate: (flags & ItemFlags.Duplicate) === ItemFlags.Duplicate,
-		Socketed: (flags & ItemFlags.Socketed) === ItemFlags.Socketed,
-		OnPet: (flags & ItemFlags.OnPet) === ItemFlags.OnPet,
-		x2000: (flags & ItemFlags.x2000) === ItemFlags.x2000,
-		NotInSocket: (flags & ItemFlags.NotInSocket) === ItemFlags.NotInSocket,
-		Ear: (flags & ItemFlags.Ear) === ItemFlags.Ear,
-		StartItem: (flags & ItemFlags.StartItem) === ItemFlags.StartItem,
-		Compact: (flags & ItemFlags.Compact) === ItemFlags.Compact,
-		Ethereal: (flags & ItemFlags.Ethereal) === ItemFlags.Ethereal,
-		Any: (flags & ItemFlags.Any) === ItemFlags.Any,
-		Personalized: (flags & ItemFlags.Personalized) === ItemFlags.Personalized,
-		Gamble: (flags & ItemFlags.Gamble) === ItemFlags.Gamble,
-		Runeword: (flags & ItemFlags.Runeword) === ItemFlags.Runeword,
-		x8000000: (flags & ItemFlags.x8000000) === ItemFlags.x8000000,
-	};
-	item.flags.valueOf = () => flags;
-	item.version = this.byte;
-
-	item.unknown1 = this.bits(2);
-	item.destination = this.bits(3);
-
-	/////////////////////////////
-	// Location of an item
-	////////////////////////////
-	if (item.destination === ItemDestination.Ground) {
-		item.x = this.word;
-		item.y = this.word;
-	} else {
-		item.location = this.bits(4);
-		item.x = this.bits(4);
-		item.y = this.bits(3);
-		item.container = this.bits(4);
-	}
-
-	if (item.action === ItemActionType.AddToShop || item.action === ItemActionType.RemoveFromShop) {
-		let buff = item.container | 0x80;
-		if ((buff & 1) === 1) {
-			buff--;
-			item.y += 8;
-		}
-		item.container = buff;
-	} else if (item.container === ItemContainer.Unspecified) {
-		if (item.location === EquipmentLocation.NotApplicable) {
-			if ((flags & ItemFlags.InSocket) === ItemFlags.InSocket) {
-				item.container = ItemContainer.Item;
-				item.y = -1;
-			} else if (item.action === ItemActionType.PutInBelt || item.action === ItemActionType.RemoveFromBelt) {
-				item.container = ItemContainer.Belt;
-				item.y = item.x / 4;
-				item.x = item.x % 4;
-			}
+		if (buffer[0] === 0x9d) {
+			item.ownerType = this.byte;
+			item.ownerUID = this.dword;
 		} else {
-			item.x = -1;
-			item.y = -1;
+			item.ownerType = 0; // Its an private item, aka on us. We are an player
+			item.ownerUID = game.me.uid;
 		}
-	}
+		const flags = this.dword;
+		item.flags = {
+			None: (flags & ItemFlags.None) === ItemFlags.None,
+			Equipped: (flags & ItemFlags.Equipped) === ItemFlags.Equipped,
+			InSocket: (flags & ItemFlags.InSocket) === ItemFlags.InSocket,
+			Identified: (flags & ItemFlags.Identified) === ItemFlags.Identified,
+			x20: (flags & ItemFlags.x20) === ItemFlags.x20,
+			SwitchedIn: (flags & ItemFlags.SwitchedIn) === ItemFlags.SwitchedIn,
+			SwitchedOut: (flags & ItemFlags.SwitchedOut) === ItemFlags.SwitchedOut,
+			Broken: (flags & ItemFlags.Broken) === ItemFlags.Broken,
+			Duplicate: (flags & ItemFlags.Duplicate) === ItemFlags.Duplicate,
+			Socketed: (flags & ItemFlags.Socketed) === ItemFlags.Socketed,
+			OnPet: (flags & ItemFlags.OnPet) === ItemFlags.OnPet,
+			x2000: (flags & ItemFlags.x2000) === ItemFlags.x2000,
+			NotInSocket: (flags & ItemFlags.NotInSocket) === ItemFlags.NotInSocket,
+			Ear: (flags & ItemFlags.Ear) === ItemFlags.Ear,
+			StartItem: (flags & ItemFlags.StartItem) === ItemFlags.StartItem,
+			Compact: (flags & ItemFlags.Compact) === ItemFlags.Compact,
+			Ethereal: (flags & ItemFlags.Ethereal) === ItemFlags.Ethereal,
+			Any: (flags & ItemFlags.Any) === ItemFlags.Any,
+			Personalized: (flags & ItemFlags.Personalized) === ItemFlags.Personalized,
+			Gamble: (flags & ItemFlags.Gamble) === ItemFlags.Gamble,
+			Runeword: (flags & ItemFlags.Runeword) === ItemFlags.Runeword,
+			x8000000: (flags & ItemFlags.x8000000) === ItemFlags.x8000000,
+		};
+		item.flags.valueOf = () => flags;
+		item.version = this.byte;
 
-	/////////////////////////////
-	// Generic types
-	////////////////////////////
+		item.unknown1 = this.bits(2);
+		item.destination = this.bits(3);
 
-	if ((flags & ItemType.Ear) === ItemType.Ear) {
-		item.charClass = this.bits(3);
-		item.level = this.bits(7);
-		item.name = this.string();
+		/////////////////////////////
+		// Location of an item
+		////////////////////////////
+		if (item.destination === ItemDestination.Ground) {
+			item.x = this.word;
+			item.y = this.word;
+		} else {
+			item.location = this.bits(4);
+			item.x = this.bits(4);
+			item.y = this.bits(3);
+			item.container = this.bits(4);
+		}
 
-		item.baseItem = BaseItem.get(ItemType.Ear);
-		return item;
-	}
-
-
-	item.baseItem = BaseItem.getByID(item.category, item.baseItemId = this.dword);
-	item.stats = {};
-
-	// Big Pile : 1 bits
-	// Quantity : Big Pile ? 32 bits : 12 bits
-	if (item.baseItem.type === ItemType.Gold) {
-		item.stats.Quantity = this.bits(this.bit ? 32 : 12);
-		return item;
-	}
-
-	// Used Sockets : 3 bits
-	item.usedSockets = this.bits(3);
-
-	// Ends here if SimpleItem or Gamble
-	if ((flags & (ItemFlags.Compact | ItemFlags.Gamble)) !== 0)
-		return item;
-
-	// ILevel : 7
-	item.level = this.bits(7);
-
-	// Quality : 4
-	item.quality = this.bits(4);
-
-	// Graphic : 1 : 3+1
-	if (this.boolean) item.graphic = this.bits(3);
-
-	// Color : 1 : 11+1
-	if (this.boolean) item.color = this.bits(11);
-
-	// Identified?
-	// Quality specific information
-	if ((flags & ItemFlags.Identified) === ItemFlags.Identified) {
-		switch (item.quality) {
-			case ItemQuality.Inferior:
-				item.prefix = new ItemAffix(ItemAffixType.InferiorPrefix, this.bits(3));
-				break;
-
-			case ItemQuality.Superior:
-				item.prefix = 0;
-				item.superiorType = new ItemAffix(ItemAffixType.SuperiorPrefix, this.bits(3));
-				break;
-
-			case ItemQuality.Magic:
-				item.prefix = new ItemAffix(ItemAffixType.MagicPrefix, this.bits(11));
-				item.suffix = new ItemAffix(ItemAffixType.MagicSuffix, this.bits(11));
-				break;
-
-			case ItemQuality.Rare:
-			case ItemQuality.Crafted:
-				item.prefix = new ItemAffix(ItemAffixType.RarePrefix, this.bits(8));
-				item.suffix = new ItemAffix(ItemAffixType.RareSuffix, this.bits(8));
-				break;
-
-			case ItemQuality.Set:
-				item.setItem = this.bits(12); // ToDo; get set item
-				break;
-
-			case ItemQuality.Unique:
-				if (!["std", "hdm", "te1", "te2", "te3", "te4"].includes(item.baseItem.code)) {
-					item.uniqueItem = this.bits(12);
+		if (item.action === ItemActionType.AddToShop || item.action === ItemActionType.RemoveFromShop) {
+			let buff = item.container | 0x80;
+			if ((buff & 1) === 1) {
+				buff--;
+				item.y += 8;
+			}
+			item.container = buff;
+		} else if (item.container === ItemContainer.Unspecified) {
+			if (item.location === EquipmentLocation.NotApplicable) {
+				if ((flags & ItemFlags.InSocket) === ItemFlags.InSocket) {
+					item.container = ItemContainer.Item;
+					item.y = -1;
+				} else if (item.action === ItemActionType.PutInBelt || item.action === ItemActionType.RemoveFromBelt) {
+					item.container = ItemContainer.Belt;
+					item.y = item.x / 4;
+					item.x = item.x % 4;
 				}
-				break;
-		}
-	}
-
-	if (item.quality === ItemQuality.Rare || item.quality === ItemQuality.Crafted) {
-		item.magicPrefixes = [];
-		item.magicSuffixes = [];
-		for (let i = 0; i < 3; i++) {
-			if (this.boolean) {
-				item.magicPrefixes.push(MagicPrefixType[this.bits(11)]);
-			}
-			if (this.boolean) {
-				item.magicSuffixes.push(MagicSuffixType[this.bits(11)]);
+			} else {
+				item.x = -1;
+				item.y = -1;
 			}
 		}
-	}
 
-	// Runeword Info : 16
-	if ((flags & ItemFlags.Runeword) === ItemFlags.Runeword) {
-		//HACK: this is probably very wrong, but works for all the runewords I tested so far...
-		//TODO: remove these fields once testing is done
-		item.runewordID = this.bits(12);
-		item.runewordParam = this.bits(4);
+		/////////////////////////////
+		// Generic types
+		////////////////////////////
 
-		let val = -1;
-		if (item.runewordParam === 5) //TODO: Test cases where ID is around 100...
-		{
-			val = item.runewordID - item.runewordParam * 5;
-			if (val < 100) val--;
-		} else if (item.runewordParam === 2) //TODO: Test other runewords than Delirium...
-		{
-			val = ((item.runewordID & 0x3FF) >> 5) + 2;
+		if ((flags & ItemType.Ear) === ItemType.Ear) {
+			item.charClass = this.bits(3);
+			item.level = this.bits(7);
+			item.name = this.string();
+
+			item.baseItem = BaseItem.get(ItemType.Ear);
+			return item;
 		}
 
-		//TODO: Test other runewords, find real shift / add params...
-		br.pos -= 2;
-		item.runewordParam = this.word;
-		item.runewordID = val;
-		item.runeword = val;
-	}
 
-	// Personalized Name : 7 * (NULLSTRING Length)
-	if ((flags & ItemFlags.Personalized) === ItemFlags.Personalized)
-		item.name = br.readString(16, 7);
+		item.baseItem = BaseItem.getByID(item.category, item.baseItemId = this.dword);
+		item.stats = {};
 
-	if (item.baseItem.isArmor()) {
-		let baseStat = BaseStat.get(StatType.ArmorClass);
-		item.stats[baseStat.Stat] = (this.bits(baseStat.SaveBits));
-	}
+		// Big Pile : 1 bits
+		// Quantity : Big Pile ? 32 bits : 12 bits
+		if (item.baseItem.type === ItemType.Gold) {
+			item.stats.Quantity = this.bits(this.bit ? 32 : 12);
+			return item;
+		}
 
-	if (item.baseItem.isArmor() || item.baseItem.isWeapon()) {
-		let baseStat = BaseStat.get(StatType.MaxDurability);
-		item.stats[baseStat.Stat] = this.bits(baseStat.SaveBits);
-	}
+		// Used Sockets : 3 bits
+		item.usedSockets = this.bits(3);
 
-	if ((flags & ItemFlags.Socketed) === ItemFlags.Socketed) {
-		let baseStat = BaseStat.get(StatType.Sockets);
-		item.stats[baseStat.Stat] = br.bit(baseStat.SaveBits);
-	}
+		// Ends here if SimpleItem or Gamble
+		if ((flags & (ItemFlags.Compact | ItemFlags.Gamble)) !== 0)
+			return item;
 
-	if (item.baseItem.stackable) {
-		if (item.baseItem.useable) item.use = this.bits(5);
-		let baseStat = BaseStat.get(StatType.Quantity);
-		item.stats[baseStat.Stat] = this.bits(9);
-	}
+		// ILevel : 7
+		item.level = this.bits(7);
 
-	if ((flags & ItemFlags.Identified) !== ItemFlags.Identified)
+		// Quality : 4
+		item.quality = this.bits(4);
+
+		// Graphic : 1 : 3+1
+		if (this.boolean) item.graphic = this.bits(3);
+
+		// Color : 1 : 11+1
+		if (this.boolean) item.color = this.bits(11);
+
+		// Identified?
+		// Quality specific information
+		if ((flags & ItemFlags.Identified) === ItemFlags.Identified) {
+			switch (item.quality) {
+				case ItemQuality.Inferior:
+					item.prefix = new ItemAffix(ItemAffixType.InferiorPrefix, this.bits(3));
+					break;
+
+				case ItemQuality.Superior:
+					item.prefix = 0;
+					item.superiorType = new ItemAffix(ItemAffixType.SuperiorPrefix, this.bits(3));
+					break;
+
+				case ItemQuality.Magic:
+					item.prefix = new ItemAffix(ItemAffixType.MagicPrefix, this.bits(11));
+					item.suffix = new ItemAffix(ItemAffixType.MagicSuffix, this.bits(11));
+					break;
+
+				case ItemQuality.Rare:
+				case ItemQuality.Crafted:
+					item.prefix = new ItemAffix(ItemAffixType.RarePrefix, this.bits(8));
+					item.suffix = new ItemAffix(ItemAffixType.RareSuffix, this.bits(8));
+					break;
+
+				case ItemQuality.Set:
+					item.setItem = this.bits(12); // ToDo; get set item
+					break;
+
+				case ItemQuality.Unique:
+					if (!["std", "hdm", "te1", "te2", "te3", "te4"].includes(item.baseItem.code)) {
+						item.uniqueItem = this.bits(12);
+					}
+					break;
+			}
+		}
+
+		if (item.quality === ItemQuality.Rare || item.quality === ItemQuality.Crafted) {
+			item.magicPrefixes = [];
+			item.magicSuffixes = [];
+			for (let i = 0; i < 3; i++) {
+				if (this.boolean) {
+					item.magicPrefixes.push(MagicPrefixType[this.bits(11)]);
+				}
+				if (this.boolean) {
+					item.magicSuffixes.push(MagicSuffixType[this.bits(11)]);
+				}
+			}
+		}
+
+		// Runeword Info : 16
+		if ((flags & ItemFlags.Runeword) === ItemFlags.Runeword) {
+			//HACK: this is probably very wrong, but works for all the runewords I tested so far...
+			//TODO: remove these fields once testing is done
+			item.runewordID = this.bits(12);
+			item.runewordParam = this.bits(4);
+
+			let val = -1;
+			if (item.runewordParam === 5) //TODO: Test cases where ID is around 100...
+			{
+				val = item.runewordID - item.runewordParam * 5;
+				if (val < 100) val--;
+			} else if (item.runewordParam === 2) //TODO: Test other runewords than Delirium...
+			{
+				val = ((item.runewordID & 0x3FF) >> 5) + 2;
+			}
+
+			//TODO: Test other runewords, find real shift / add params...
+			br.pos -= 2;
+			item.runewordParam = this.word;
+			item.runewordID = val;
+			item.runeword = val;
+		}
+
+		// Personalized Name : 7 * (NULLSTRING Length)
+		if ((flags & ItemFlags.Personalized) === ItemFlags.Personalized)
+			item.name = br.readString(16, 7);
+
+		if (item.baseItem.isArmor()) {
+			let baseStat = BaseStat.get(StatType.ArmorClass);
+			item.stats[baseStat.Stat] = (this.bits(baseStat.SaveBits));
+		}
+
+		if (item.baseItem.isArmor() || item.baseItem.isWeapon()) {
+			let baseStat = BaseStat.get(StatType.MaxDurability);
+			item.stats[baseStat.Stat] = this.bits(baseStat.SaveBits);
+		}
+
+		if ((flags & ItemFlags.Socketed) === ItemFlags.Socketed) {
+			let baseStat = BaseStat.get(StatType.Sockets);
+			item.stats[baseStat.Stat] = br.bit(baseStat.SaveBits);
+		}
+
+		if (item.baseItem.stackable) {
+			if (item.baseItem.useable) item.use = this.bits(5);
+			let baseStat = BaseStat.get(StatType.Quantity);
+			item.stats[baseStat.Stat] = this.bits(9);
+		}
+
+		if ((flags & ItemFlags.Identified) !== ItemFlags.Identified)
+			return item;
+
+		// Set Bonus Stats
+		let setMods = item.quality === ItemQuality.Set ? br.bit(5) : 0;
+
+		let stat;
+		if (!["std", "hdm", "te1", "te2", "te3", "te4"].includes(item.baseItem.code)) {
+			while (readStat(br, item)) ;
+			if ((flags & ItemFlags.Runeword) === ItemFlags.Runeword) while (readStat(br, item)) ;
+
+			if (setMods) for (let i = 0; i < 5; i++) if ((setMods & (1 << i)) !== 0) while (readStat(br, item)) ;
+		}
+
 		return item;
+	}).call();
+	const item = new Item;
 
-	// Set Bonus Stats
-	let setMods = item.quality === ItemQuality.Set ? br.bit(5) : 0;
+	// Copy values of tmpItem to item.
+	Object.keys(tmpItem).forEach(key => (item[key] = tmpItem[key]) && delete tmpItem[key]);
 
-	let stat;
-	if (!["std", "hdm", "te1", "te2", "te3", "te4"].includes(item.baseItem.code)) {
-		while (readStat(br, item)) ;
-		if ((flags & ItemFlags.Runeword) === ItemFlags.Runeword) while (readStat(br, item)) ;
 
-		if (setMods) for (let i = 0; i < 5; i++) if ((setMods & (1 << i)) !== 0) while (readStat(br, item)) ;
-	}
-
+	game.itemCollector.newItem(item);
 	return item;
 }
 

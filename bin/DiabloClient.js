@@ -52,22 +52,9 @@ class Client {
 			server.pipe(client);
 			return null;
 		}
-		const dataHandler = (from, to, hooks) => buffer => {
-			// Need to predict better what kind of server is what.
-			if (port === 4000) { // D2GS
-				if (hooks.map(client => client.call(this, buffer) === Client.BLOCK).some(_ => _)) {
-					return false;
-				}
-			} else if (port === 6112) { // Realm
-				// ToDo; something?
-			}
-			to.write(buffer);
-		};
+		const dataHandler = (from, to, hooks) => buffer => !hooks.map(client => client.call(this, buffer) === Client.BLOCK).some(_ => _) && to.write(buffer);
 
-		this.hooks = {
-			client: [],
-			server: [],
-		};
+		this.hooks = {client: [], server: []};
 		client.on('data', dataHandler(client, server, this.hooks.client));
 		server.on('data', dataHandler(server, client, this.hooks.server));
 
